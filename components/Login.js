@@ -17,20 +17,24 @@ export default function Login() {
         blurDataURL={SpotifyLogo}
       />
 
-      {Object.values(providers).map((provider) => (
-        <div key={provider.name}>
-          <button
-            className="bg-[#18D860] text-white p-5 rounded-full"
-            onClick={() => {
-              signIn(provider.id, {
-                callbackUrl: "/dashboard",
-              });
-            }}
-          >
-            Login with {provider.name}
-          </button>
-        </div>
-      ))}
+      {providers ? (
+        Object.values(providers).map((provider) => (
+          <div key={provider.name}>
+            <button
+              className="bg-[#18D860] text-white p-5 rounded-full"
+              onClick={() => {
+                signIn(provider.id, {
+                  callbackUrl: "/dashboard",
+                });
+              }}
+            >
+              Login with {provider.name}
+            </button>
+          </div>
+        ))
+      ) : (
+        <div></div>
+      )}
     </div>
   );
 }
