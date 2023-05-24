@@ -2,6 +2,17 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer components {
+  .button {
+    @apply h-5 w-5 cursor-pointer hover:scale-125 transition transform
+    duration-100 ease-out;
+  }
+
+  .sidebar-button {
+    @apply flex items-center space-x-2 hover:text-white;
+  }
+}
+
 :root {
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;
