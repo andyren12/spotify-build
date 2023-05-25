@@ -77,6 +77,31 @@ export default function Player() {
     }
   }, [volume, debouncedAdjustVolume]);
 
+  const handleSkip = () => {
+    spotifyApi.skipToNext().then(() => {
+      spotifyApi.getMyCurrentPlayingTrack().then((data) => {
+        console.log(data);
+        setCurrentTrackID(data.body?.item?.id);
+        setIsPlaying(true);
+      });
+    });
+  };
+
+  const handleRewind = () => {
+    spotifyApi.getMyCurrentPlayingTrack().then((data) => {
+      if (data.body?.progress_ms > 5000) {
+        spotifyApi.seek(0);
+      } else {
+        spotifyApi.skipToPrevious().then(() => {
+          spotifyApi.getMyCurrentPlayingTrack().then((data) => {
+            setCurrentTrackID(data.body?.item?.id);
+            setIsPlaying(true);
+          });
+        });
+      }
+    });
+  };
+
   return (
     <div
       className="h-24 bg-gradient-to-b from-black to-gray-900 
@@ -96,7 +121,7 @@ export default function Player() {
 
       <div className="flex items-center justify-evenly">
         <ArrowsRightLeftIcon className="button" />
-        <BackwardIcon className="button" />
+        <BackwardIcon className="button" onClick={handleRewind} />
         {isPlaying ? (
           <PauseCircleIcon
             className="button w-10 h-10"
@@ -108,7 +133,7 @@ export default function Player() {
             onClick={handlePlayPause}
           />
         )}
-        <ForwardIcon className="button" />
+        <ForwardIcon className="button" onClick={handleSkip} />
         <ArrowPathRoundedSquareIcon className="button" />
       </div>
 

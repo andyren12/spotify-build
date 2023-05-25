@@ -13,12 +13,14 @@ import { useEffect, useState } from "react";
 import useSpotify from "@/hooks/useSpotify";
 import { useRecoilState } from "recoil";
 import { playlistIDState } from "@/atoms/playlistAtom";
+import { displayState } from "@/atoms/displayAtom";
 
 export default function Sidebar() {
   const spotifyApi = useSpotify();
   const { data: session, status } = useSession();
   const [playlists, setPlaylists] = useState([]);
   const [playlistID, setPlaylistID] = useRecoilState(playlistIDState);
+  const [display, setDisplay] = useRecoilState(displayState);
 
   useEffect(() => {
     if (spotifyApi.getAccessToken()) {
@@ -35,7 +37,7 @@ export default function Sidebar() {
     h-screen sm:max-w-[12rem] lg:max-w-[15rem] hidden md:inline-flex"
     >
       <div className="space-y-4">
-        <button className="sidebar-button">
+        <button onClick={() => setDisplay("home")} className="sidebar-button">
           <HomeIcon className="w-5 h-5" />
           <p>Home</p>
         </button>
@@ -65,7 +67,10 @@ export default function Sidebar() {
         {playlists.map((playlist) => (
           <p
             key={playlist.id}
-            onClick={() => setPlaylistID(playlist.id)}
+            onClick={() => {
+              setPlaylistID(playlist.id);
+              setDisplay("playlist");
+            }}
             className="cursor-pointer hover:text-white"
           >
             {playlist.name}
