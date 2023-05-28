@@ -2,8 +2,10 @@ import { artistIDState } from "@/atoms/artistAtom";
 import useSpotify from "@/hooks/useSpotify";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
-import { useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import Song from "./Song";
+import { albumIDState } from "@/atoms/albumAtom";
+import { displayState } from "@/atoms/displayAtom";
 
 export default function Artist() {
   const { data: session } = useSession();
@@ -12,6 +14,8 @@ export default function Artist() {
   const [artist, setArtist] = useState();
   const [topTracks, setTopTracks] = useState([]);
   const [albums, setAlbums] = useState([]);
+  const [albumID, setAlbumID] = useRecoilState(albumIDState);
+  const [display, setDisplay] = useRecoilState(displayState);
   const [seeMore, setSeeMore] = useState(false);
 
   useEffect(() => {
@@ -66,7 +70,14 @@ export default function Artist() {
         <h2 className="text-[1.2rem] py-8">Recent Albums</h2>
         <div className="flex justify-evenly mb-40">
           {albums.map((album) => (
-            <div className="flex flex-col" key={album.id}>
+            <div
+              className="flex flex-col cursor-pointer"
+              key={album.id}
+              onClick={() => {
+                setDisplay("album");
+                setAlbumID(album.id);
+              }}
+            >
               <img
                 className="w-24 h-24 md:w-28 md:h-28 lg:w-36 lg:h-36 xl:w-44 xl:h-44 mb-2"
                 src={album.images[0].url}

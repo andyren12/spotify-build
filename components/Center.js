@@ -8,6 +8,7 @@ import Artist from "./Artist";
 import { useRecoilValue } from "recoil";
 import { displayState } from "@/atoms/displayAtom";
 import { useState } from "react";
+import Album from "./Album";
 
 export default function Center() {
   const { data: session } = useSession();
@@ -49,6 +50,7 @@ export default function Center() {
       {display === "playlist" && <Playlist />}
       {display === "home" && <Home />}
       {display === "artist" && <Artist />}
+      {display === "album" && <Album />}
     </div>
   );
 }
