@@ -2,7 +2,7 @@ import { artistIDState } from "@/atoms/artistAtom";
 import { displayState } from "@/atoms/displayAtom";
 import { currentTrackIDState, isPlayingState } from "@/atoms/songAtom";
 import useSpotify from "@/hooks/useSpotify";
-import { millisToMinutesAndSeconds } from "@/lib/time";
+import { millisToMinutesAndSeconds } from "@/utils/time";
 import { useRecoilState } from "recoil";
 
 export default function Song({ order, track }) {
