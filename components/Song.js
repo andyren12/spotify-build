@@ -40,7 +40,7 @@ export default function Song({ order, track }) {
             {track.name}
           </p>
           <p
-            className="w-40"
+            className="w-40 hover:underline"
             onClick={() => {
               setDisplay("artist");
               setArtistID(track.artists[0].id);

@@ -15,6 +15,9 @@ import {
   SpeakerXMarkIcon,
 } from "@heroicons/react/24/solid";
 import { debounce } from "lodash";
+import { displayState } from "@/atoms/displayAtom";
+import { artistIDState } from "@/atoms/artistAtom";
+import { albumIDState } from "@/atoms/albumAtom";
 
 export default function Player() {
   const spotifyApi = useSpotify();
@@ -23,6 +26,9 @@ export default function Player() {
     useRecoilState(currentTrackIDState);
   const [isPlaying, setIsPlaying] = useRecoilState(isPlayingState);
   const [volume, setVolume] = useState(50);
+  const [display, setDisplay] = useRecoilState(displayState);
+  const [artistID, setArtistID] = useRecoilState(artistIDState);
+  const [albumID, setAlbumID] = useRecoilState(albumIDState);
 
   const songInfo = useSongInfo();
 
@@ -113,8 +119,22 @@ export default function Player() {
           alt=""
         />
         <div>
-          <h3 className="mb-0.5 text-sm">{songInfo?.name}</h3>
-          <p className="text-gray-200 text-xs">
+          <h3
+            className="mb-0.5 text-sm hover:underline cursor-pointer"
+            onClick={() => {
+              setDisplay("album");
+              setAlbumID(songInfo.album.id);
+            }}
+          >
+            {songInfo?.name}
+          </h3>
+          <p
+            className="text-gray-200 text-xs hover:underline cursor-pointer"
+            onClick={() => {
+              setDisplay("artist");
+              setArtistID(songInfo.artists?.[0]?.id);
+            }}
+          >
             {songInfo?.artists?.[0]?.name}
           </p>
         </div>
