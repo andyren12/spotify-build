@@ -58,9 +58,9 @@ export default function Player() {
     currentTrackID,
     spotifyApi,
     session,
+    songInfo,
     setCurrentTrackID,
     setIsPlaying,
-    songInfo,
   ]);
 
   const debouncedAdjustVolume = useMemo(
@@ -80,7 +80,6 @@ export default function Player() {
   const handleSkip = () => {
     spotifyApi.skipToNext().then(() => {
       spotifyApi.getMyCurrentPlayingTrack().then((data) => {
-        console.log(data);
         setCurrentTrackID(data.body?.item?.id);
         setIsPlaying(true);
       });
@@ -114,8 +113,10 @@ export default function Player() {
           alt=""
         />
         <div>
-          <h3>{songInfo?.name}</h3>
-          <p>{songInfo?.artists?.[0]?.name}</p>
+          <h3 className="mb-0.5 text-sm">{songInfo?.name}</h3>
+          <p className="text-gray-200 text-xs">
+            {songInfo?.artists?.[0]?.name}
+          </p>
         </div>
       </div>
 

@@ -4,6 +4,7 @@ import { signOut, useSession } from "next-auth/react";
 import { ChevronDownIcon } from "@heroicons/react/24/outline";
 import Playlist from "./Playlist";
 import Home from "./Home";
+import Artist from "./Artist";
 import { useRecoilValue } from "recoil";
 import { displayState } from "@/atoms/displayAtom";
 import { useState } from "react";
@@ -11,13 +12,13 @@ import { useState } from "react";
 export default function Center() {
   const { data: session } = useSession();
   const display = useRecoilValue(displayState);
-  const [dropDownStyle, setDropDownStyle] = useState("opacity-0");
+  const [dropDownStyle, setDropDownStyle] = useState("hidden opacity-0");
 
   const handleDropDown = () => {
-    if (dropDownStyle === "opacity-0") {
-      setDropDownStyle("opacity-1");
+    if (dropDownStyle === "hidden opacity-0") {
+      setDropDownStyle("block opacity-1");
     } else {
-      setDropDownStyle("opacity-0");
+      setDropDownStyle("hidden opacity-0");
     }
   };
 
@@ -47,6 +48,7 @@ export default function Center() {
       </header>
       {display === "playlist" && <Playlist />}
       {display === "home" && <Home />}
+      {display === "artist" && <Artist />}
     </div>
   );
 }
