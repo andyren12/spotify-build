@@ -1,69 +1,70 @@
-import useSpotify from "@/hooks/useSpotify";
-import Song from "./Song";
-import { useState, useEffect } from "react";
-import { useRecoilValue } from "recoil";
-import { useSession } from "next-auth/react";
-import { shuffle } from "lodash";
 import { albumIDState } from "@/atoms/albumAtom";
+import { displayState } from "@/atoms/displayAtom";
+import { useSetRecoilState } from "recoil";
+import { EllipsisVerticalIcon } from "@heroicons/react/24/outline";
+import { useState } from "react";
+import { recommendAlbumState } from "@/atoms/recommendAtom";
 
-const colors = [
-  "from-indigo-500",
-  "from-blue-500",
-  "from-green-500",
-  "from-red-500",
-  "from-yellow-500",
-  "from-pink-500",
-  "from-purple-500",
-];
+export default function Album(album) {
+  const setDisplay = useSetRecoilState(displayState);
+  const setAlbumID = useSetRecoilState(albumIDState);
+  const setRecommendAlbum = useSetRecoilState(recommendAlbumState);
+  const [ellipsisOpacity, setEllipsisOpacity] = useState("hidden");
+  const [dropDownStyle, setDropDownStyle] = useState("hidden");
 
-export default function Album() {
-  const { data: session } = useSession();
-  const [color, setColor] = useState(null);
-  const spotifyApi = useSpotify();
-  const albumID = useRecoilValue(albumIDState);
-  const [album, setAlbum] = useState();
-  const [tracks, setTracks] = useState([]);
-
-  useEffect(() => {
-    setColor(shuffle(colors).pop());
-  }, [albumID]);
-
-  useEffect(() => {
-    if (session) {
-      spotifyApi
-        .getAlbum(albumID)
-        .then((data) => {
-          setAlbum(data.body);
-          setTracks(data.body.tracks.items);
-          console.log(data.body);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+  const handleDropDown = () => {
+    if (dropDownStyle === "hidden") {
+      setDropDownStyle("inline");
+    } else {
+      setDropDownStyle("hidden");
     }
-  }, [session, spotifyApi, albumID]);
+  };
+
   return (
-    <div>
-      <section
-        className={`flex items-end space-x-7 
-        bg-gradient-to-b to-black ${color} 
-        h-80 text-white p-8`}
+    <div
+      className="relative flex flex-col cursor-pointer"
+      onMouseOver={() => setEllipsisOpacity("opacity-1")}
+      onMouseLeave={() => {
+        setEllipsisOpacity("opacity-0");
+        setDropDownStyle("hidden");
+      }}
+    >
+      <button
+        className={`${ellipsisOpacity} absolute left-[4.5rem] md:left-[5.5rem] lg:left-[7.5rem] xl:left-[9.5rem] cursor-pointer z-50`}
+        onClick={handleDropDown}
       >
-        <img
-          className="h-44 w-44 shadow-2xl"
-          src={album?.images?.[0]?.url}
-          alt=""
-        />
-        <div>
-          <p>ALBUM</p>
-          <h1 className="text-2xl md:text-3xl xl:text-5xl">{album?.name}</h1>
-        </div>
-      </section>
-      <div>
-        {tracks.map((track, index) => (
-          <Song track={track} order={index} key={track.id} />
-        ))}
+        <EllipsisVerticalIcon className="w-8 h-8" />
+      </button>
+      <img
+        className="relative w-24 h-24 md:w-28 md:h-28 lg:w-36 lg:h-36 xl:w-44 xl:h-44 mb-2"
+        src={album.album.images[0].url}
+        alt=""
+        onClick={() => {
+          setDisplay("album");
+          setAlbumID(album.album.id);
+        }}
+      />
+      <div
+        className={`${dropDownStyle} absolute right-0 top-8 px-1 bg-gray-800 z-50
+      text-sm`}
+        onClick={() => {
+          setRecommendAlbum((currentState) => [
+            ...currentState,
+            album.album.id,
+          ]);
+        }}
+      >
+        Recommend
       </div>
+      <p
+        className="w-24 md:w-28 lg:w-36 text-sm lg:text-base text-center truncate"
+        onClick={() => {
+          setDisplay("album");
+          setAlbumID(album.album.id);
+        }}
+      >
+        {album.album.name}
+      </p>
     </div>
   );
 }

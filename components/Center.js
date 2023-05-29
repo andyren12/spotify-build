@@ -8,18 +8,20 @@ import Artist from "./Artist";
 import { useRecoilValue } from "recoil";
 import { displayState } from "@/atoms/displayAtom";
 import { useState } from "react";
-import Album from "./Album";
+import AlbumPage from "./AlbumPage";
+import Recommend from "./Recommend";
+import Search from "./Search";
 
 export default function Center() {
   const { data: session } = useSession();
   const display = useRecoilValue(displayState);
-  const [dropDownStyle, setDropDownStyle] = useState("hidden opacity-0");
+  const [dropDownStyle, setDropDownStyle] = useState("hidden");
 
   const handleDropDown = () => {
-    if (dropDownStyle === "hidden opacity-0") {
-      setDropDownStyle("block opacity-1");
+    if (dropDownStyle === "hidden") {
+      setDropDownStyle("block");
     } else {
-      setDropDownStyle("hidden opacity-0");
+      setDropDownStyle("hidden");
     }
   };
 
@@ -50,7 +52,9 @@ export default function Center() {
       {display === "playlist" && <Playlist />}
       {display === "home" && <Home />}
       {display === "artist" && <Artist />}
-      {display === "album" && <Album />}
+      {display === "album" && <AlbumPage />}
+      {display === "recommend" && <Recommend />}
+      {display === "search" && <Search />}
     </div>
   );
 }

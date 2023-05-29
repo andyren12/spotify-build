@@ -2,21 +2,38 @@ import { artistIDState } from "@/atoms/artistAtom";
 import useSpotify from "@/hooks/useSpotify";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import Song from "./Song";
 import { albumIDState } from "@/atoms/albumAtom";
 import { displayState } from "@/atoms/displayAtom";
+import { shuffle } from "lodash";
+import Album from "./Album";
+
+const colors = [
+  "from-indigo-500",
+  "from-blue-500",
+  "from-green-500",
+  "from-red-500",
+  "from-yellow-500",
+  "from-pink-500",
+  "from-purple-500",
+];
 
 export default function Artist() {
   const { data: session } = useSession();
   const spotifyApi = useSpotify();
+  const [color, setColor] = useState(null);
   const artistID = useRecoilValue(artistIDState);
   const [artist, setArtist] = useState();
   const [topTracks, setTopTracks] = useState([]);
   const [albums, setAlbums] = useState([]);
   const [albumID, setAlbumID] = useRecoilState(albumIDState);
-  const [display, setDisplay] = useRecoilState(displayState);
+  const setDisplay = useSetRecoilState(displayState);
   const [seeMore, setSeeMore] = useState(false);
+
+  useEffect(() => {
+    setColor(shuffle(colors).pop());
+  }, [albumID]);
 
   useEffect(() => {
     if (session) {
@@ -40,7 +57,7 @@ export default function Artist() {
     <div>
       <section
         className={`flex items-end space-x-7
-        h-80 text-white p-8`}
+        h-80 text-white p-8 bg-gradient-to-b to-black ${color} `}
       >
         <img
           className="h-44 w-44 shadow-2xl"
@@ -70,21 +87,7 @@ export default function Artist() {
         <h2 className="text-[1.2rem] py-8">Recent Albums</h2>
         <div className="flex justify-evenly mb-40">
           {albums.map((album) => (
-            <div
-              className="flex flex-col cursor-pointer"
-              key={album.id}
-              onClick={() => {
-                setDisplay("album");
-                setAlbumID(album.id);
-              }}
-            >
-              <img
-                className="w-24 h-24 md:w-28 md:h-28 lg:w-36 lg:h-36 xl:w-44 xl:h-44 mb-2"
-                src={album.images[0].url}
-                alt=""
-              />
-              <p className="text-sm lg:text-base text-center">{album.name}</p>
-            </div>
+            <Album album={album} key={album.id} />
           ))}
         </div>
       </section>
