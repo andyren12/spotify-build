@@ -5,13 +5,13 @@ import {
   MagnifyingGlassIcon,
   BuildingLibraryIcon,
   HeartIcon,
-  RssIcon,
   PlusCircleIcon,
+  HandThumbUpIcon,
 } from "@heroicons/react/24/outline";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import useSpotify from "@/hooks/useSpotify";
-import { useRecoilState } from "recoil";
+import { useSetRecoilState } from "recoil";
 import { playlistIDState } from "@/atoms/playlistAtom";
 import { displayState } from "@/atoms/displayAtom";
 
@@ -19,8 +19,8 @@ export default function Sidebar() {
   const spotifyApi = useSpotify();
   const { data: session, status } = useSession();
   const [playlists, setPlaylists] = useState([]);
-  const [playlistID, setPlaylistID] = useRecoilState(playlistIDState);
-  const [display, setDisplay] = useRecoilState(displayState);
+  const setPlaylistID = useSetRecoilState(playlistIDState);
+  const setDisplay = useSetRecoilState(displayState);
 
   useEffect(() => {
     if (spotifyApi.getAccessToken()) {
@@ -37,11 +37,11 @@ export default function Sidebar() {
     h-screen sm:max-w-[12rem] lg:max-w-[15rem] hidden md:inline-flex"
     >
       <div className="space-y-4">
-        <button onClick={() => setDisplay("home")} className="sidebar-button">
+        <button className="sidebar-button" onClick={() => setDisplay("home")}>
           <HomeIcon className="w-5 h-5" />
           <p>Home</p>
         </button>
-        <button className="sidebar-button">
+        <button className="sidebar-button" onClick={() => setDisplay("search")}>
           <MagnifyingGlassIcon className="w-5 h-5" />
           <p>Search</p>
         </button>
@@ -58,9 +58,14 @@ export default function Sidebar() {
           <HeartIcon className="w-5 h-5" />
           <p>Liked Songs</p>
         </button>
-        <button className="sidebar-button ">
-          <RssIcon className="w-5 h-5" />
-          <p>Your episodes</p>
+        <button
+          className="sidebar-button"
+          onClick={() => {
+            setDisplay("recommend");
+          }}
+        >
+          <HandThumbUpIcon className="w-5 h-5" />
+          <p>Recommend</p>
         </button>
         <hr className="border-t-[0.1px] border-gray-900" />
 
