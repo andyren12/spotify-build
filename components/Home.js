@@ -1,7 +1,7 @@
 import useSpotify from "@/hooks/useSpotify";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
-import { useRecoilState } from "recoil";
+import { useSetRecoilState } from "recoil";
 import { displayState } from "@/atoms/displayAtom";
 import { playlistIDState } from "@/atoms/playlistAtom";
 import { artistIDState } from "@/atoms/artistAtom";
@@ -11,9 +11,9 @@ export default function Home() {
   const spotifyApi = useSpotify();
   const [topArtists, setTopArtists] = useState([]);
   const [featuredPlaylists, setFeaturedPlaylists] = useState([]);
-  const [display, setDisplay] = useRecoilState(displayState);
-  const [playlistID, setPlaylistID] = useRecoilState(playlistIDState);
-  const [artistID, setArtistID] = useRecoilState(artistIDState);
+  const setDisplay = useSetRecoilState(displayState);
+  const setPlaylistID = useSetRecoilState(playlistIDState);
+  const setArtistID = useSetRecoilState(artistIDState);
 
   useEffect(() => {
     if (session) {

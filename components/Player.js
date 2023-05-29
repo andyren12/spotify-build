@@ -3,7 +3,7 @@ import useSongInfo from "@/hooks/useSongInfo";
 import useSpotify from "@/hooks/useSpotify";
 import { useSession } from "next-auth/react";
 import { useEffect, useMemo, useState } from "react";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useSetRecoilState } from "recoil";
 import { ArrowsRightLeftIcon } from "@heroicons/react/24/outline";
 import {
   ArrowPathRoundedSquareIcon,
@@ -26,9 +26,9 @@ export default function Player() {
     useRecoilState(currentTrackIDState);
   const [isPlaying, setIsPlaying] = useRecoilState(isPlayingState);
   const [volume, setVolume] = useState(50);
-  const [display, setDisplay] = useRecoilState(displayState);
-  const [artistID, setArtistID] = useRecoilState(artistIDState);
-  const [albumID, setAlbumID] = useRecoilState(albumIDState);
+  const setDisplay = useSetRecoilState(displayState);
+  const setArtistID = useSetRecoilState(artistIDState);
+  const setAlbumID = useSetRecoilState(albumIDState);
 
   const songInfo = useSongInfo();
 

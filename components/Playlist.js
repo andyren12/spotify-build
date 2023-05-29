@@ -1,10 +1,10 @@
 import useSpotify from "@/hooks/useSpotify";
-import Songs from "./Songs";
 import { useState, useEffect } from "react";
 import { useRecoilValue, useRecoilState } from "recoil";
 import { playlistIDState, playlistState } from "@/atoms/playlistAtom";
 import { useSession } from "next-auth/react";
 import { shuffle } from "lodash";
+import Song from "./Song";
 
 const colors = [
   "from-indigo-500",
@@ -56,8 +56,10 @@ export default function Playlist() {
           <h1 className="text-2xl md:text-3xl xl:text-5xl">{playlist?.name}</h1>
         </div>
       </section>
-      <div>
-        <Songs />
+      <div className="px-8 flex flex-col space-y-1 pb-28 text-white">
+        {playlist?.tracks.items.map((track, index) => (
+          <Song key={track.track.id} track={track.track} order={index} />
+        ))}
       </div>
     </div>
   );
