@@ -1,34 +1,18 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+## Complete Spotify build
 
-## Getting Started
+Spotify build using Spotify Web API that allows a user to log in and access their Spotify data.
 
-First, run the development server:
+## Spotify Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-```
+Functional music player that allows users to select and play songs on a device running Spotify. Users can play, pause, skip forwards/backwards, and change volume.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Fetches user's top artists and songs as well as Spotify's featured playlists to be displayed in a home page.
+Fetches user's playlists to be displayed in a sidebar.
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+Interactive UI allows users to select playlists, view artist pages, and view albums they select.
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+Search bar allows users to search for songs and albums.
 
-## Learn More
+## Recommendation Feature
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+New feature that allows users to recommend songs and albums they've been listening to on their profile. Each song and album has an ellipsis icon that allows users to add it to their recommendations. A max of 3 recommendations for song/album are available and adding additional recommendations will replace the current oldest recommendation. Recommendations are displayed on a dedicated recommendations page.
